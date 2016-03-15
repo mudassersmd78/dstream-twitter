@@ -16,7 +16,7 @@
  */
 
 // scalastyle:off println
-package org.apache.spark.examples.streaming
+package org.apache.spark.examples.streaming.twitter
 
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -34,8 +34,6 @@ object TwitterHashTagJoinSentiments {
       System.exit(1)
     }
 
-    StreamingExamples.setStreamingLogLevels()
-
     val Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = args.take(4)
     val filters = args.takeRight(args.length - 4)
 
@@ -46,7 +44,7 @@ object TwitterHashTagJoinSentiments {
     System.setProperty("twitter4j.oauth.accessToken", accessToken)
     System.setProperty("twitter4j.oauth.accessTokenSecret", accessTokenSecret)
 
-    val sparkConf = new SparkConf().setAppName("TwitterHashTagJoinSentiments")
+    val sparkConf = new SparkConf().setMaster("local[*]").setAppName("TwitterHashTagJoinSentiments")
     val ssc = new StreamingContext(sparkConf, Seconds(2))
     val stream = TwitterUtils.createStream(ssc, None, filters)
 

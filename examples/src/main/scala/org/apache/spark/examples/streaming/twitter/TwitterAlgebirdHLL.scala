@@ -16,7 +16,7 @@
  */
 
 // scalastyle:off println
-package org.apache.spark.examples.streaming
+package org.apache.spark.examples.streaming.twitter
 
 import com.twitter.algebird.HyperLogLog._
 import com.twitter.algebird.HyperLogLogMonoid
@@ -46,12 +46,10 @@ import org.apache.spark.streaming.twitter._
 object TwitterAlgebirdHLL {
   def main(args: Array[String]) {
 
-    StreamingExamples.setStreamingLogLevels()
-
     /** Bit size parameter for HyperLogLog, trades off accuracy vs size */
     val BIT_SIZE = 12
     val filters = args
-    val sparkConf = new SparkConf().setAppName("TwitterAlgebirdHLL")
+    val sparkConf = new SparkConf().setMaster("local[*]").setAppName("TwitterAlgebirdHLL")
     val ssc = new StreamingContext(sparkConf, Seconds(5))
     val stream = TwitterUtils.createStream(ssc, None, filters, StorageLevel.MEMORY_ONLY_SER)
 

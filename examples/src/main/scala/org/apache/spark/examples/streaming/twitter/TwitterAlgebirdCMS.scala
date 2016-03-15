@@ -16,7 +16,7 @@
  */
 
 // scalastyle:off println
-package org.apache.spark.examples.streaming
+package org.apache.spark.examples.streaming.twitter
 
 import com.twitter.algebird._
 import com.twitter.algebird.CMSHasherImplicits._
@@ -51,8 +51,6 @@ import org.apache.spark.streaming.twitter._
 // scalastyle:on
 object TwitterAlgebirdCMS {
   def main(args: Array[String]) {
-    StreamingExamples.setStreamingLogLevels()
-
     // CMS parameters
     val DELTA = 1E-3
     val EPS = 0.01
@@ -62,7 +60,7 @@ object TwitterAlgebirdCMS {
     val TOPK = 10
 
     val filters = args
-    val sparkConf = new SparkConf().setAppName("TwitterAlgebirdCMS")
+    val sparkConf = new SparkConf().setMaster("local[*]").setAppName("TwitterAlgebirdCMS")
     val ssc = new StreamingContext(sparkConf, Seconds(10))
     val stream = TwitterUtils.createStream(ssc, None, filters, StorageLevel.MEMORY_ONLY_SER_2)
 

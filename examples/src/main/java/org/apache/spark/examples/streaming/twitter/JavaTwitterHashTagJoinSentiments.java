@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.spark.examples.streaming;
+package org.apache.spark.examples.streaming.twitter;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -50,8 +50,6 @@ public class JavaTwitterHashTagJoinSentiments {
       System.exit(1);
     }
 
-    StreamingExamples.setStreamingLogLevels();
-
     String consumerKey = args[0];
     String consumerSecret = args[1];
     String accessToken = args[2];
@@ -65,7 +63,7 @@ public class JavaTwitterHashTagJoinSentiments {
     System.setProperty("twitter4j.oauth.accessToken", accessToken);
     System.setProperty("twitter4j.oauth.accessTokenSecret", accessTokenSecret);
 
-    SparkConf sparkConf = new SparkConf().setAppName("JavaTwitterHashTagJoinSentiments");
+    SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("JavaTwitterHashTagJoinSentiments");
     JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, new Duration(2000));
     JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jssc, filters);
 
